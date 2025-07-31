@@ -5,9 +5,13 @@ import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import connectDB from "@/lib/db"
 
-
+const ensureConnection = async () => {
+    await connectDB()
+}
 
 export const signUpAction = async (formData: FormData) => {
+    await ensureConnection()
+
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
@@ -15,8 +19,6 @@ export const signUpAction = async (formData: FormData) => {
     if(existingUser){
         redirect('/login?error=email-exists')
     }
-
-    await connectDB()
 
     const hashedPassword = await hashPassword(password)
     const user = await User.create({
@@ -35,10 +37,10 @@ export const signUpAction = async (formData: FormData) => {
 }
 
 export const loginAction = async (formData: FormData) => {
+    await ensureConnection()
+
     const email = formData.get('email') as string
     const password = formData.get('password') as string
-
-    await connectDB()
     
     const existingUser = await User.findOne({email})
     if(!existingUser){

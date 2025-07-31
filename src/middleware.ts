@@ -3,7 +3,7 @@ import { verifyJWT } from "./lib/auth";
 
 
 
-const PUBLIC_ROUTES = ['/login' ,'signup']
+const PUBLIC_ROUTES = ['/login' ,'/signup']
 const AUTH_ROUTES = ['/dashboard']
 
 export async function middleware(request: NextRequest){

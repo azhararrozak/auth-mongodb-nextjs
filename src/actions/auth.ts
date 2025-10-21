@@ -14,6 +14,7 @@ export const signUpAction = async (formData: FormData) => {
 
     const email = formData.get('email') as string
     const password = formData.get('password') as string
+    const role = formData.get('role') as string || 'user'
 
     const existingUser = await User.findOne({email})
     if(existingUser){
@@ -23,9 +24,10 @@ export const signUpAction = async (formData: FormData) => {
     const hashedPassword = await hashPassword(password)
     const user = await User.create({
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        role
     })
-    const token = await createJWT(email, user._id.toString())
+    const token = await createJWT(email, user._id.toString(), user.role)
     const cookieStore = await cookies()
     cookieStore.set('token', token, {
         httpOnly: true,
@@ -52,7 +54,7 @@ export const loginAction = async (formData: FormData) => {
         redirect('/login?error=Invalid-credentials')
     }
 
-    const token = await createJWT(email, existingUser._id.toString())
+    const token = await createJWT(email, existingUser._id.toString(), existingUser.role)
     const cookieStore = await cookies()
     cookieStore.set('token', token, {
         httpOnly: true,
@@ -66,4 +68,5 @@ export const loginAction = async (formData: FormData) => {
 export const logoutAction = async () => {
     const cookieStore = await cookies()
     cookieStore.delete('token')
+    redirect('/login')
 }

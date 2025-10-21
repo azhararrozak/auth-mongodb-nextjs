@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 interface CustomJWTPayload {
     email: string;
     userId: string;
+    role: string;
     iat?: number;
     exp?: number;
 }
@@ -19,8 +20,8 @@ export const verifyPassword = async (password: string, hashedPassword: string) =
     return await bcrypt.compare(password, hashedPassword);
 }
 
-export const createJWT = async(email: string, userId: string) => {
-    return await new SignJWT({ email, userId })
+export const createJWT = async(email: string, userId: string, role:  string) => {
+    return await new SignJWT({ email, userId, role })
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()
         .setExpirationTime('1h')
@@ -43,11 +44,11 @@ export const verifyJWT = async (): Promise<CustomJWTPayload | null> => {
     }
 }
 
-export const getSession = async (): Promise<{email: string, userId: string} | null> => {
+export const getSession = async (): Promise<{email: string, userId: string, role: string } | null> => {
     const payload = await verifyJWT();
 
-    if(payload && typeof payload.email === 'string' && typeof payload.userId === 'string') {
-        return { email: payload.email, userId: payload.userId };
+    if(payload && typeof payload.email === 'string' && typeof payload.userId === 'string' && typeof payload.role === 'string') {
+        return { email: payload.email, userId: payload.userId, role: payload.role };
     }
     return null;
 }

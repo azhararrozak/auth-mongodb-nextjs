@@ -95,6 +95,24 @@ export default async function SignUpPage({searchParams} : SignUpPageProps){
               />
             </div>
 
+            <div className="space-y-2">
+              <Label htmlFor="role" className="text-gray-700">
+                Account Type
+              </Label>
+              <select
+                id="role"
+                name="role"
+                required
+                className="w-full py-3 px-4 text-base rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+              <p className="text-xs text-gray-500 mt-1">
+                Select your account type
+              </p>
+            </div>
+
             <Button
               type="submit"
               className="w-full py-6 text-base font-medium bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white rounded-xl shadow-lg transition-all"

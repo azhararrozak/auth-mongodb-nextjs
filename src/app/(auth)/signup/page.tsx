@@ -1,5 +1,3 @@
-import { getSession } from "@/lib/auth"
-import { redirect } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
@@ -13,9 +11,6 @@ interface SignUpPageProps {
 }
 
 export default async function SignUpPage({searchParams} : SignUpPageProps){
-    const session = await getSession()
-    if(session) redirect('/dashboard')
-
     const params = await searchParams
 
     const errorMessages =  {
@@ -32,7 +27,6 @@ export default async function SignUpPage({searchParams} : SignUpPageProps){
     : null
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-xl rounded-2xl border-0 bg-white/90 backdrop-blur-sm">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold text-gray-800">
@@ -132,7 +126,5 @@ export default async function SignUpPage({searchParams} : SignUpPageProps){
           </div>
         </CardContent>
       </Card>
-    </div>
     )
-
 }

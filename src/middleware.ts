@@ -3,8 +3,7 @@ import { verifyJWT } from "./lib/auth";
 
 
 
-const PUBLIC_ROUTES = ['/login' ,'/signup']
-const AUTH_ROUTES = ['/dashboard']
+const PUBLIC_ROUTES = ['/login', '/signup']
 
 export async function middleware(request: NextRequest){
     const token = request.cookies.get('token')?.value
